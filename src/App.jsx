@@ -1,10 +1,15 @@
+import Form from "./components/Form"
+import Header from "./components/Header"
 
 function App() {
  
 
   return (
     <>
-    <h1>ji</h1>
+    <div>
+      <Header/>
+      {/* <Form/> */}
+    </div>
      </>
   )
 }
