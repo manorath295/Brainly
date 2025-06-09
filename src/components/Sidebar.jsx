@@ -23,7 +23,7 @@ const Sidebarr = () => {
   ]
 
   return (
-    <div className="p-2  max-w-2xs w-full  border">
+    <div className="p-2  max-w-2xs   border">
       <h1 className="text-xl font-bold mb-4 w-fit border">Overview</h1>
 
       <div className="p-2 bg-gray-200 w-fit  rounded-lg mb-4">
@@ -45,7 +45,10 @@ const Sidebarr = () => {
           </div>
         ))}
       </div>
-      <h1><h1 className="text-xl  mb-4 w-fit  mt-6" >Quick Access</h1></h1>
+   <h1 className="text-xl mb-4 w-fit mt-6 bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
+  Quick Access
+</h1>
+
     </div>
   )
 }

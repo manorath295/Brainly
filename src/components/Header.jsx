@@ -1,12 +1,24 @@
-import { Menu, Moon, Plus, Search, Table } from "lucide-react";
+import {  Menu, Moon, Plus, Search, Table, UserPen } from "lucide-react";
 import React, { useState } from "react";
 import Form from "./Form";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleForm } from "../utils/formSlice";
+import { Link } from "react-router-dom";
+import Info from "./Info";
 
 const Header = () => {
+    const dispatch=useDispatch()
+    const [pro,setpro]=useState(false);
   const [activeColor, setActiveColor] = useState("table");
-  const[isopen, setIsOpen]= useState(false);
+
+  const isopen=useSelector(store=>store.forms)
   const openForm=()=>{
-    setIsOpen(p=>!p)
+    dispatch(toggleForm())
+  console.log(isopen)
+
+  }
+  const changepro=()=>{
+    setpro(!pro)
   }
   return (
     <>
@@ -61,6 +73,16 @@ const Header = () => {
         <Plus/>
         <h1>Add Link</h1>
       </div>
+        <div>
+            <Link to={'/signin'}>
+        <button className="bg-gradient-to-r from-purple-500 to-blue-400 p-2 rounded-2xl">LOGIN</button>
+        </Link>
+    </div>
+    <div className="relative ">
+        <UserPen onClick={changepro} />
+            {pro&&<Info/>}
+    </div>
+     
       </div> 
      
     </div>
@@ -68,7 +90,9 @@ const Header = () => {
   <div className="fixed inset-0 z-50 flex items-center justify-center  bg-opacity-30 backdrop-blur-sm">
     <Form />
   </div>
+
 )}
+
     </>
   );
 };
