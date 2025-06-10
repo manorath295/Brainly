@@ -19,8 +19,10 @@ const Ap = () => {
       {/* <Form/> */}
       <div className="flex">
      <Sidebarr/>
-     {/* <Itemlist/> */}
-     <ItemCard item={item}/>
+     <Itemlist/>
+     {/* <ItemCard item={item}/>
+      */}
+      
      </div>
     </div>
   )

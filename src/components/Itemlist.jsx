@@ -14,6 +14,7 @@ const Itemlist = () => {
       const response = await axios.get('http://localhost:3000/api/v1/content', {
         withCredentials: true,
       });
+        console.log(response.data.contents);
       setContents(response.data.contents); // contains an array of content
     } catch (err) {
       console.error("Error fetching content:", err);

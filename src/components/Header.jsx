@@ -10,6 +10,7 @@ const Header = () => {
     const dispatch=useDispatch()
     const [pro,setpro]=useState(false);
   const [activeColor, setActiveColor] = useState("table");
+  const [intialval,setintival]=useState('Home');
 
   const isopen=useSelector(store=>store.forms)
   const openForm=()=>{
@@ -23,9 +24,10 @@ const Header = () => {
   return (
     <>
     <div className="flex items-center justify-between border-b-1 border-gray-500 pb-2 p-2">
-      <h1 className="bg-gradient-to-r from-blue-600 to-purple-500 bg-clip-text text-transparent font-bold text-2xl">
+      <h1 className=" bg-gradient-to-r from-blue-600 to-purple-500 bg-clip-text text-transparent font-bold text-2xl">
         LinkStrong
       </h1>
+      
       <div className="flex gap-5">
       <div className="flex border border-purple-500 w-72 px-2 py-1 gap-3 rounded-2xl">
         <Search />
@@ -73,11 +75,11 @@ const Header = () => {
         <Plus/>
         <h1>Add Link</h1>
       </div>
-        <div>
+       
             <Link to={'/signin'}>
-        <button className="bg-gradient-to-r from-purple-500 to-blue-400 p-2 rounded-2xl">LOGIN</button>
+        <button onClick={()=>setintival('Login')} className="bg-gradient-to-r from-purple-500 to-blue-400 p-2 rounded-2xl">LOGIN</button>
         </Link>
-    </div>
+  
     <div className="relative ">
         <UserPen onClick={changepro} />
             {pro&&<Info/>}
