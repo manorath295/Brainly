@@ -6,7 +6,7 @@ import { toggleForm } from "../utils/formSlice";
 import { Link } from "react-router-dom";
 import Info from "./Info";
 
-const Header = () => {
+const Header = ({setRefresh}) => {
     const dispatch=useDispatch()
     const [pro,setpro]=useState(false);
   const [activeColor, setActiveColor] = useState("table");
@@ -90,7 +90,7 @@ const Header = () => {
     </div>
      {isopen && (
   <div className="fixed inset-0 z-50 flex items-center justify-center  bg-opacity-30 backdrop-blur-sm">
-    <Form />
+    <Form setRefresh={setRefresh} />
   </div>
 
 )}

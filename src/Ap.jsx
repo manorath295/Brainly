@@ -4,6 +4,7 @@ import Header from "./components/Header"
 import Sidebarr from "./components/Sidebar"
 import ItemCard from "./components/ItemCard"
 import Itemlist from "./components/Itemlist"
+import { useState } from "react"
 
 const Ap = () => {
   const item = {
@@ -13,13 +14,18 @@ const Ap = () => {
   description: "vgg",
   tags: []
 };
+const [val,setval]=useState('all');
+const [num,setnum]=useState({});
+// const [categoryCounts, setCategoryCounts] = useState({}); // 👈 new
+const [refresh, setRefresh] = useState(false);
+
   return (
      <div>
-      <Header/>
+      <Header setRefresh={setRefresh} />
       {/* <Form/> */}
       <div className="flex">
-     <Sidebarr/>
-     <Itemlist/>
+     <Sidebarr val={val} setval={setval} num={num}  />
+     <Itemlist val={val} setnum={setnum} refresh={refresh}  />
      {/* <ItemCard item={item}/>
       */}
       

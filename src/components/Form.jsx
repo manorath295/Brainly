@@ -1,14 +1,20 @@
 import React, { useRef, useState } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toggleForm } from '../utils/formSlice';
 
-const Form = () => {
+const Form = ({setRefresh}) => {
   const titleRef = useRef();
   const urlRef = useRef();
   const typeRef = useRef();
 
   const [contentId, setContentId] = useState(null);
   const [tagTitle, setTagTitle] = useState("");
-
+  const dispatch=useDispatch()
+  const backform=()=>{
+    dispatch(toggleForm())
+  }
   const handleAddContent = async (e) => {
     e.preventDefault();
 
@@ -24,6 +30,7 @@ const Form = () => {
       );
 
       setContentId(res.data.message._id);
+      setRefresh(p=>!p)
       alert("Content created! Now you can add tags.");
     } catch (err) {
       alert("Error creating content: " + err?.response?.data);
@@ -72,6 +79,9 @@ const Form = () => {
           </select>
         </div>
         <button type="submit" className="bg-blue-500 text-white px-4 py-1 rounded">Create</button>
+        
+        <div  onClick={backform} className="bg-blue-500 text-white px-4 py-1 rounded">Back</div>
+       
       </form>
 
       {contentId && (
