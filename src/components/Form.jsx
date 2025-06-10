@@ -1,73 +1,93 @@
-import React, { useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { addlink } from '../utils/linkSlice'
-import { toggleForm } from '../utils/formSlice'
+import React, { useRef, useState } from 'react'
 import axios from 'axios'
 
 const Form = () => {
-    const dispatch=useDispatch()
-    const titleRef = useRef()
-const urlRef = useRef()
-const descRef = useRef()
-const categoryRef = useRef()
-const handlecancel=()=>{
-    dispatch(toggleForm())
-}
-    const handlelink= async (e)=>{
-        e.preventDefault();
-            const title = titleRef.current.value
-    const url = urlRef.current.value
-    const description = descRef.current.value
-    const category = categoryRef.current.value
- 
-    console.log({ title, url, description, category })
-     const res = await axios.post("http://localhost:3000/api/v1/content",{
-        title:title,
-        link:url,
-        type:description
-     },{
-        withCredentials:true,
-     })
-     console.log(res.data)
-        dispatch(addlink({title,url,description,category}))
-    }
-  return (
-    <div  className='flex flex-col items-center justify-center '>
-        <h1>ADD New Link</h1>
-        <form className='p-4 border-2 w-80 h-80 '>
-            <div className='mb-3 '>
-                <label htmlFor="title">Title</label>
-                <br/>
-                <input ref={titleRef} id='title' type="text" placeholder='Enter title here ' />
-            </div >
-             <div className='mb-3'>
-                <label htmlFor="link">URL</label>
-                <br/>
-                <input ref={urlRef} id='link' type="text" placeholder='https://example.com ' />
-            </div>
-            <div className='mb-3'>
-                <label htmlFor="Description">Description</label>
-                <br/>
-                <input ref={descRef} id='Description' type="text" placeholder='optional Description ' />
-            </div>
-            <div className='mb-3'>
-                <h1>Category</h1>
-                <select
-                ref={categoryRef}
-        id="category"
-        name="category"
-        className="border border-gray-400 px-2 py-1 rounded-lg hover:border"
-      >
-        <option value="apple">website</option>
-        <option value="banana">twitter</option>
-        <option value="cherry">youtube</option>
-      </select>
-            </div>
-            <button onClick={handlelink}>Add Link</button>
-            <button onClick={handlecancel}>Cancel</button>
-        </form>
-    </div>
-  )
-}
+  const titleRef = useRef();
+  const urlRef = useRef();
+  const typeRef = useRef();
 
-export default Form
+  const [contentId, setContentId] = useState(null);
+  const [tagTitle, setTagTitle] = useState("");
+
+  const handleAddContent = async (e) => {
+    e.preventDefault();
+
+    const title = titleRef.current.value;
+    const link = urlRef.current.value;
+    const type = typeRef.current.value;
+
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/content",
+        { title, link, type },
+        { withCredentials: true }
+      );
+
+      setContentId(res.data.message._id);
+      alert("Content created! Now you can add tags.");
+    } catch (err) {
+      alert("Error creating content: " + err?.response?.data);
+    }
+  };
+
+  const handleAddTag = async () => {
+    if (!contentId || !tagTitle) {
+      alert("Both tag and content must be present.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/tags",
+        { title: tagTitle, contentId },
+        { withCredentials: true }
+      );
+
+      alert("Tag added successfully.");
+      console.log(res.data);
+    } catch (err) {
+      alert("Error adding tag: " + err?.response?.data);
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center p-4">
+      <h1 className="text-xl mb-2">Add New Link</h1>
+      <form className="p-4 border-2 w-80" onSubmit={handleAddContent}>
+        <div className="mb-3">
+          <label htmlFor="title">Title</label>
+          <input ref={titleRef} id="title" type="text" className="w-full border p-1" />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="link">Link</label>
+          <input ref={urlRef} id="link" type="text" className="w-full border p-1" />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="type">Type</label>
+          <select ref={typeRef} className="w-full border p-1">
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+            <option value="article">Article</option>
+            <option value="audio">Audio</option>
+          </select>
+        </div>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-1 rounded">Create</button>
+      </form>
+
+      {contentId && (
+        <div className="mt-6">
+          <h2 className="text-lg mb-2">Add Tag</h2>
+          <input
+            value={tagTitle}
+            onChange={(e) => setTagTitle(e.target.value)}
+            placeholder="Enter tag"
+            className="border p-1 mr-2"
+          />
+          <button onClick={handleAddTag} className="bg-green-500 text-white px-3 py-1 rounded">Add Tag</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Form;

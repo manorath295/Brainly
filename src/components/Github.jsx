@@ -23,12 +23,15 @@ const Itemlist = () => {
   if (contents.length === 0) return <h1>Loading or no content</h1>;
 
   return (
-    <div className="grid grid-cols-3 gap-7">
-      {contents.map((item, index) => (
+  <div className="grid grid-cols-3 gap-7">
+    {contents
+      .filter(item => item.link && item.link.includes("github"))
+      .map((item, index) => (
         <ItemCard key={index} item={item} />
       ))}
-    </div>
-  );
+  </div>
+);
+
 };
 
 export default Itemlist;
